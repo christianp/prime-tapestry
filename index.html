@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css"></link>
+    </head>
+    <body>
+        <div id="controls">
+            <label for="scale">Scale</label> <input type="range" min="5" max="100" value="20" id="scale">
+        </div>
+        <div id="diagram-container">
+            <svg xmlns="http://www.w3.org/2000/svg" id="diagram" viewBox="-2 -16 64 32" width="2400">
+                <g class="lines"></g>
+                <g class="dots"></g>
+            </svg>
+        </div>
+        <script type="text/javascript" src="thing.js"></script>
+    </body>
+</html>

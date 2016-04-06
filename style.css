@@ -1,0 +1,64 @@
+html {
+  background: black;
+  color: white;
+}
+
+#controls {
+  position: absolute;
+  left: 1em;
+  bottom: 1em;
+}
+
+#diagram-container {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+svg {
+  background: black;
+}
+.line {
+  stroke-width: 0.1;
+  stroke: #eee;
+  fill: none;
+}
+
+.line.multiple {
+  opacity: 0.5;
+}
+
+.dot {
+  r: 0.2;
+  fill: #888;
+  stroke-width: 0.1;
+}
+.dot.multiple-2 { fill: #800; }
+.dot.multiple-3 { fill: #080; }
+.dot.multiple-5 { fill: #008; }
+.dot.multiple-2.multiple-3 { fill: #880; }
+.dot.multiple-2.multiple-5 { fill: #808; }
+.dot.multiple-3.multiple-5 { fill: #088; }
+.dot.multiple-2.multiple-3.multiple-5 { fill: #888; }
+
+.dot.prime {
+  fill: white;
+}
+.label {
+  display: none;
+  font-size: 0.5px;
+  text-anchor: middle;
+  alignment-baseline: middle;
+  fill: #333;
+}
+
+.dot, .line {
+    animation: fade-in 3s;
+}
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
