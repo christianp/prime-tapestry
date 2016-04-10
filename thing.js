@@ -22,17 +22,22 @@ function Tapestry() {
     this.miny = 0;
     this.dot_pos = [];
 
-    this.next_thing();
+    this.threads = [];
+
+    for(var i=0;i<4;i++) {
+       this.next_thing();
+       this.threads.push(new MultipleThread(this,primes[i]));
+    }
 
     this.rescale();
+
 }
 Tapestry.prototype = {
     next_thing: function() {
-        var g_lines = svg.querySelector('.lines');
-        var g_dots = svg.querySelector('.dots');
+        var g_lines = this.g_lines = svg.querySelector('.lines');
+        var g_dots = this.g_dots = svg.querySelector('.dots');
         var p = primes[this.pi];
         this.pi += 1;
-        console.log(p);
         var diff = p - this.op;
         var path = ['M ' + this.x + ' 0'];
         var y = 0;
@@ -97,6 +102,10 @@ Tapestry.prototype = {
         });
         g_dots.appendChild(c);
         this.dot_pos[p] = {x:this.x,y:y};
+
+        this.threads.forEach(function(thread) {
+            thread.next();
+        });
     },
 
     rescale: function() {
@@ -106,6 +115,43 @@ Tapestry.prototype = {
         this.scale = scale_input.value;
         var width = (this.x+4)*this.scale;
         svg.setAttribute('width',width);
+    }
+}
+
+var phi = (1+Math.sqrt(5))/2;
+function MultipleThread(tapestry,b) {
+    this.tapestry = tapestry;
+    this.b = b;
+    this.t = this.b;
+
+    this.last_pos = tapestry.dot_pos[this.t];
+
+    var an = this.b*phi*180/Math.PI;
+    this.colour = 'hsl('+an+',50%,50%)';
+    this.opacity = Math.pow(this.b,-1/2);
+}
+MultipleThread.prototype = {
+    next: function() {
+        var g_threads = svg.querySelector('.threads');
+        while(this.t<this.tapestry.dot_pos.length-this.b) {
+            this.t += this.b;
+            var pos = this.tapestry.dot_pos[this.t];
+
+            var path = 'M '+this.last_pos.x+' '+this.last_pos.y + ' L '+pos.x+' '+pos.y;
+            var g = createElement('g',{class:'line'});
+            var line = createElement('path',{
+                d: path,
+                class: 'thread multiple multiple-'+this.b,
+                'max_opacity': this.opacity
+            });
+            line.style.stroke = this.colour;
+            line.style.opacity = this.opacity;
+            g.appendChild(line)
+
+            g_threads.appendChild(g);
+
+            this.last_pos = pos;
+        }
     }
 }
 
@@ -144,4 +190,4 @@ setInterval(function(){
         tapestry.next_thing();
         tapestry.rescale();
     }
-},20);
+},5);

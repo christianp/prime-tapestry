@@ -17,7 +17,7 @@ html {
 svg {
   background: black;
 }
-.line {
+.line, .thread {
   stroke-width: 0.1;
   stroke: #eee;
   fill: none;
